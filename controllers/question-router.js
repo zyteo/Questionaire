@@ -11,9 +11,7 @@ const QuestionCtrl = require("./question-ctrl");
 // =======================================
 // This is for show page, showing particular cat
 // :id is the cat's id
-router.get("/question/:id", QuestionCtrl.getQuestionById);
-// This is for index page, showing all cats
-router.get("/question", QuestionCtrl.getQuestions);
+router.get("/question/:username", QuestionCtrl.getQuestionByUsername);
 
 // =======================================
 //              POST ROUTES
@@ -27,10 +25,5 @@ router.post("/question", QuestionCtrl.createQuestion);
 // This is for updating cat
 // :id is the cat's id
 router.put("/question/:id", QuestionCtrl.updateQuestion);
-
-// =======================================
-//              DELETE ROUTES
-// =======================================
-router.delete("/question/:id", QuestionCtrl.deleteQuestion);
 
 module.exports = router;

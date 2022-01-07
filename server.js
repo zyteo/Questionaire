@@ -7,9 +7,9 @@ const mongoose = require('mongoose');
 const app = express();
 const path = require("path")
 const authRouter = require("./controllers/auth-router");
+const questionRouter = require("./controllers/question-router");
 const cookieParser = require('cookie-parser');
 const PORT = process.env.PORT ?? 8000;
-
 // =======================================
 //              MIDDLEWARE
 // =======================================
@@ -17,6 +17,7 @@ app.use(express.static(path.join(__dirname, "client", "build")));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use("/api", authRouter);
+app.use("/api", questionRouter);
 app.use(cookieParser());
 
 
