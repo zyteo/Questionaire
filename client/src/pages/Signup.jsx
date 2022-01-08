@@ -120,7 +120,7 @@ function SignUp({ language }) {
       <form onSubmit={handleSubmit}>
         <Label>Email:</Label>
         <Input
-          type="text"
+          type="email"
           name="email"
           value={user.email}
           onChange={handleEmailChange}

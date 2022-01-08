@@ -32,7 +32,7 @@ function App() {
         />
 
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/welcome" element={<Welcome auth={auth} />} />
+        <Route path="/welcome" element={<Welcome auth={auth} userName={userName} />} />
       </Routes>
     </div>
   );

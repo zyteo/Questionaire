@@ -10,6 +10,8 @@ const AuthCtrl = require("./auth-ctrl");
 // =======================================
 // This is for logout
 router.get("/logout", AuthCtrl.logout);
+// for getting user details
+router.get("/user/:username", AuthCtrl.getUser);
 
 // =======================================
 //              POST ROUTES

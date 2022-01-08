@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
+import axios from "axios";
 import styled from "styled-components";
 
 const Button = styled.button`
@@ -38,36 +39,59 @@ const Button = styled.button`
     font-size: 6px;
   }
   `;
-  
-function Welcome({ language, auth }) {
+
+function Welcome({ userName, auth }) {
   const navigate = useNavigate();
   const [userDetails, setUserDetails] = useState("");
+  const [question, setQuestion] = useState(0);
 
   // only authenticated users can access welcome page
-  useEffect(()=> {
+  useEffect(() => {
     let token = localStorage.getItem("token");
-    if (auth !== "Auth" || (!token)){
+    if (auth !== "Auth" || !token) {
       navigate("/");
-    }
-    else if (token){
+    } else if (token) {
       let tokenInfo = jwt_decode(token);
       setUserDetails(tokenInfo);
     }
-  },[])
+  }, []);
 
-  
-  const handleLink = () => {
-    window.location.href = "https://google.com/";
+  // check if the user have completed the questionaire or not
+  useEffect(() => {
+    async function getQuestionData() {
+      await axios
+        .get(`/api/user/${userName}`)
+        .then((user) => {
+          // if user completed question, length is 1. otherwise 0.
+          console.log(user.data.data.question.length);
+          setQuestion(user.data.data.question.length);
+        })
+        .catch((err) => console.log(err));
+    }
+    getQuestionData();
+  }, [userName]);
+
+  const handleNewQuestion = () => {
+    navigate("/question");
+  };
+  const handleEditQuestion = () => {
+    navigate("/question_edit");
+  };
+  const handleViewResponse = () => {
+    navigate("/question_response");
   };
 
   return (
     <>
-      <h1>Welcome!</h1>
-      
-      {userDetails?.question ? (
-        <Button onClick={() => handleLink()}>Link</Button>
+      <h1>Welcome, {userName}!</h1>
+
+      {question === 0 ? (
+        <Button onClick={() => handleNewQuestion()}>Start Questionaire</Button>
       ) : (
-        <></>
+        <>
+          <Button onClick={() => handleEditQuestion()}>Edit Questionaire</Button>
+          <Button onClick={() => handleViewResponse()}>View Response</Button>
+        </>
       )}
     </>
   );
