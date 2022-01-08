@@ -6,6 +6,9 @@ import { Route, Routes, useNavigate } from "react-router-dom";
 import Login from "./pages/Login";
 import Welcome from "./pages/Welcome";
 import NavBar from "./pages/NavBar";
+import NewQuestion from "./pages/NewQuestion";
+import EditQuestion from "./pages/EditQuestion";
+import ShowQuestion from "./pages/ShowQuestion";
 
 function App() {
   const [auth, setAuth] = useState("NoAuth");
@@ -33,6 +36,9 @@ function App() {
 
         <Route path="/signup" element={<SignUp />} />
         <Route path="/welcome" element={<Welcome auth={auth} userName={userName} />} />
+        <Route path="/question" element={<NewQuestion />}/>
+        <Route path="/question_edit" element={<EditQuestion />}/>
+        <Route path="/question_response" element={<ShowQuestion/>}/>
       </Routes>
     </div>
   );
