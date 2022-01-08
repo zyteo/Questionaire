@@ -22,6 +22,18 @@ const createQuestion = async (req, res) => {
     const question = new Question(req.body);
     await question.save();
 
+    // now add question to user
+    User.findOne(
+      {
+        username: question.username,
+      },
+      (err, foundUser) => {
+        // Append the comment to the cat
+        foundUser.question.push(question);
+        foundUser.save();
+      }
+    );
+
     // somehow, if the new question doesn't exist, return error
     if (!question) {
       return res.status(400).json({ success: false, error: err });
@@ -60,7 +72,7 @@ const updateQuestion = async (req, res) => {
     question.fullname = req.body.fullname;
     question.color = req.body.color;
     question.language = req.body.language;
-   
+
     // save the updated question
     await question.save();
     if (!question) {
@@ -81,7 +93,6 @@ const updateQuestion = async (req, res) => {
     // save the user
     await user.save();
 
-
     res.status(200).json({
       success: true,
       id: question._id,
@@ -95,7 +106,6 @@ const updateQuestion = async (req, res) => {
   }
 };
 
-
 // For showing a particular question
 const getQuestionByUsername = async (req, res) => {
   try {
@@ -104,7 +114,9 @@ const getQuestionByUsername = async (req, res) => {
       username: req.body.username,
     });
     if (!question) {
-      return res.status(404).json({ success: false, error: `Question not found` });
+      return res
+        .status(404)
+        .json({ success: false, error: `Question not found` });
     }
     // return json response if successful
     res.status(200).json({ success: true, data: question });
@@ -112,7 +124,6 @@ const getQuestionByUsername = async (req, res) => {
     res.status(400).json({ success: false, error: err });
   }
 };
-
 
 // export the modules - CRUD
 // Read has 2 (for the index page--> showing all questions, and for the show page--> show particular question)
