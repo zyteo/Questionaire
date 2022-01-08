@@ -62,6 +62,13 @@ const Button = styled.button`
 
 function NewQuestion({ userName }) {
   const navigate = useNavigate();
+  // for the colours checkbox
+  const [checkColors, setCheckColors] = useState({
+    pink: false,
+    red: false,
+    blue: false,
+  });
+  // for all the questions
   const [questionDetail, setQuestionDetail] = useState({
     username: userName,
     fullname: "",
@@ -70,16 +77,29 @@ function NewQuestion({ userName }) {
   });
 
   //for every change in details, update the state
-  const handleChange = (event) => {
-    const name = event.target.name;
-    setQuestionDetail({ ...questionDetail, [name]: event.target.value });
+  const handleNameChange = (event) => {
+    setQuestionDetail({ ...questionDetail, fullname: event.target.value });
+  };
+  const handleRadioChange = (event) => {
+    setQuestionDetail({ ...questionDetail, language: event.target.value });
+  };
+
+  const onChangePink = () => {
+    setCheckColors({ ...checkColors, pink: !checkColors.pink });
+  };
+  const onChangeRed = () => {
+    setCheckColors({ ...checkColors, red: !checkColors.red });
+  };
+  const onChangeBlue = () => {
+    setCheckColors({ ...checkColors, blue: !checkColors.blue });
   };
 
   //   on submitting form
   const handleSubmit = async (event) => {
     event.preventDefault();
+    // need to add the colours checkbox before parsing into database
+    setQuestionDetail({ ...questionDetail, colour: checkColors });
 
-    console.log(questionDetail);
     await axios.post(`/api/question/`, questionDetail).then((res) => {
       window.alert(`Submission Complete!`);
       navigate(-1);
@@ -94,44 +114,29 @@ function NewQuestion({ userName }) {
         name="fullname"
         minLength="2"
         value={questionDetail.fullname}
-        onChange={(event) => handleChange(event)}
+        onChange={(event) => handleNameChange(event)}
         required
       />
       <Label>Favourite Colour:</Label>
-      <Input
-        type="checkbox"
-        name="colour"
-        value={questionDetail.colour}
-        onChange={(event) => handleChange(event)}
-      />
+      <Input type="checkbox" onChange={() => onChangePink()} />
       Pink
-      <Input
-        type="checkbox"
-        name="colour"
-        value={questionDetail.colour}
-        onChange={(event) => handleChange(event)}
-      />
+      <Input type="checkbox" onChange={() => onChangeRed()} />
       Red
-      <Input
-        type="checkbox"
-        name="colour"
-        value={questionDetail.colour}
-        onChange={(event) => handleChange(event)}
-      />
+      <Input type="checkbox" onChange={() => onChangeBlue()} />
       Blue
       <Label>Preferred Coding Language:</Label>
       <Input
         type="radio"
         name="language"
-        value={questionDetail.language}
-        onChange={(event) => handleChange(event)}
+        value="Python"
+        onChange={(event) => handleRadioChange(event)}
       />
       Python
       <Input
         type="radio"
         name="language"
-        value={questionDetail.language}
-        onChange={(event) => handleChange(event)}
+        value="Javascript"
+        onChange={(event) => handleRadioChange(event)}
       />
       Javascript
       <Button onClick={(event) => handleSubmit(event)}>Submit</Button>

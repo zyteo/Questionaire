@@ -44,6 +44,12 @@ Models:
 Timeline
 
 - 7 Jan: Started project.
+- 8 Jan: Completed backend, refining frontend to set up the questionaire with checkbox/radio options.
 
 ```
 ---
+
+References
+
+https://www.positronx.io/react-checkbox-tutorial-handle-multiple-checkboxes-values/
+https://javascript.plainenglish.io/how-to-easily-update-your-objects-with-the-spread-operator-8f3dfdbcf956
