@@ -20,7 +20,7 @@ const createUser = async (req, res) => {
   }
 
   try {
-    // first check if the username / name already exists
+    // first check if the username / email already exists
     // find the username
     const checkUsername = await User.findOne({
       username: req.body.username,
@@ -104,7 +104,7 @@ const loginUser = async (req, res) => {
     if (bcrypt.compareSync(req.body.password, user.password)) {
       // success!
       const token = jwt.sign(
-        { name: user.name, username: user.username, role: user.role },
+        { username: user.username, },
         process.env.SECRET,
         {
           expiresIn: process.env.JWT_maxAge,
@@ -117,9 +117,7 @@ const loginUser = async (req, res) => {
       });
       res.status(201).json({
         success: true,
-        role: user.role,
         username: user.username,
-        name: user.name,
         token: token,
         message: "Login success!",
       });

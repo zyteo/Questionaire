@@ -24,6 +24,6 @@ router.post("/question", QuestionCtrl.createQuestion);
 // =======================================
 // This is for updating cat
 // :id is the cat's id
-router.put("/question/:id", QuestionCtrl.updateQuestion);
+router.put("/question/:username", QuestionCtrl.updateQuestion);
 
 module.exports = router;

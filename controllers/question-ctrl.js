@@ -2,7 +2,7 @@
 //              DATABASE
 // =======================================
 const Question = require("../models/questions");
-const Comment = require("../models/comments");
+const User = require("../models/users");
 
 // Create all Questions CRUD operations
 // status errors refer: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
@@ -52,13 +52,14 @@ const updateQuestion = async (req, res) => {
   }
 
   try {
-    // req.body exists, so find the question by id and then update
-    const question = await Question.findById(req.params.id);
+    // req.body exists, so find the question by username and then update
+    const question = await Question.findOne({
+      username: req.params.username,
+    });
     // update the question details
+    question.fullname = req.body.fullname;
     question.color = req.body.color;
-    question.code = req.body.code;
     question.language = req.body.language;
-    question.resume = req.body.resume;
    
     // save the updated question
     await question.save();
@@ -68,6 +69,18 @@ const updateQuestion = async (req, res) => {
         message: "Question not found!",
       });
     }
+
+    // now update question for the user too
+    const user = await User.findOne({
+      username: question.username,
+    });
+    // replace with the updated responses
+    user.question.id(question._id).fullname = question.fullname;
+    user.question.id(question._id).color = question.color;
+    user.question.id(question._id).language = question.language;
+    // save the user
+    await user.save();
+
 
     res.status(200).json({
       success: true,
@@ -86,7 +99,7 @@ const updateQuestion = async (req, res) => {
 // For showing a particular question
 const getQuestionByUsername = async (req, res) => {
   try {
-    // find the question by id
+    // find the question by username
     const question = await Question.findOne({
       username: req.body.username,
     });
