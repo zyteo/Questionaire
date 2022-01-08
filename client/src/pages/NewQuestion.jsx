@@ -60,13 +60,81 @@ const Button = styled.button`
   }
   `;
 
-function NewQuestion() {
-  
+function NewQuestion({ userName }) {
+  const navigate = useNavigate();
+  const [questionDetail, setQuestionDetail] = useState({
+    username: userName,
+    fullname: "",
+    colour: "",
+    language: "",
+  });
 
+  //for every change in details, update the state
+  const handleChange = (event) => {
+    const name = event.target.name;
+    setQuestionDetail({ ...questionDetail, [name]: event.target.value });
+  };
+
+  //   on submitting form
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    console.log(questionDetail);
+    await axios.post(`/api/question/`, questionDetail).then((res) => {
+      window.alert(`Submission Complete!`);
+      navigate(-1);
+    });
+  };
   return (
     <>
-      <h1>Questionaire</h1>
-      
+      <h1>Questionaire for {userName}</h1>
+      <Label>Full Name:</Label>
+      <Input
+        type="text"
+        name="fullname"
+        minLength="2"
+        value={questionDetail.fullname}
+        onChange={(event) => handleChange(event)}
+        required
+      />
+      <Label>Favourite Colour:</Label>
+      <Input
+        type="checkbox"
+        name="colour"
+        value={questionDetail.colour}
+        onChange={(event) => handleChange(event)}
+      />
+      Pink
+      <Input
+        type="checkbox"
+        name="colour"
+        value={questionDetail.colour}
+        onChange={(event) => handleChange(event)}
+      />
+      Red
+      <Input
+        type="checkbox"
+        name="colour"
+        value={questionDetail.colour}
+        onChange={(event) => handleChange(event)}
+      />
+      Blue
+      <Label>Preferred Coding Language:</Label>
+      <Input
+        type="radio"
+        name="language"
+        value={questionDetail.language}
+        onChange={(event) => handleChange(event)}
+      />
+      Python
+      <Input
+        type="radio"
+        name="language"
+        value={questionDetail.language}
+        onChange={(event) => handleChange(event)}
+      />
+      Javascript
+      <Button onClick={(event) => handleSubmit(event)}>Submit</Button>
     </>
   );
 }

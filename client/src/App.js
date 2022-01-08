@@ -36,9 +36,9 @@ function App() {
 
         <Route path="/signup" element={<SignUp />} />
         <Route path="/welcome" element={<Welcome auth={auth} userName={userName} />} />
-        <Route path="/question" element={<NewQuestion />}/>
-        <Route path="/question_edit" element={<EditQuestion />}/>
-        <Route path="/question_response" element={<ShowQuestion/>}/>
+        <Route path="/question" element={<NewQuestion userName={userName}/>}/>
+        <Route path="/question_edit" element={<EditQuestion userName={userName}/>}/>
+        <Route path="/question_response" element={<ShowQuestion userName={userName}/>}/>
       </Routes>
     </div>
   );
