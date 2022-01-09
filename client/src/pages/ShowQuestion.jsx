@@ -60,13 +60,25 @@ const Button = styled.button`
   }
   `;
 
-function ShowQuestion() {
-  
+function ShowQuestion({ userName }) {
+  const navigate = useNavigate();
+  // for the question responses
+  const [questionResponse, setQuestionResponse] = useState({});
 
+  
+  //   on submitting form
+  const handleBack = async () => {
+    navigate(-1);
+  };
   return (
     <>
-      <h1>Your Response</h1>
-      
+      <h1>Responses for {userName}</h1>
+      <Label>Full Name:</Label>
+
+      <Label>Favourite Colour:</Label>
+      <Label>Preferred Coding Language:</Label>
+
+      <Button onClick={() => handleBack()}>Back</Button>
     </>
   );
 }

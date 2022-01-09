@@ -100,8 +100,8 @@ function NewQuestion({ userName }) {
     // need to add the colours checkbox before parsing into database
     setQuestionDetail({ ...questionDetail, colour: checkColors });
 
-    await axios.post(`/api/question/`, questionDetail).then((res) => {
-      window.alert(`Submission Complete!`);
+    await axios.post(`/api/question`, questionDetail).then((res) => {
+      alert(`Submission Complete!`);
       navigate(-1);
     });
   };

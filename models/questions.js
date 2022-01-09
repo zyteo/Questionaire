@@ -5,7 +5,7 @@ const questionSchema = new Schema(
   {
     username: { type: String, required: true },
     fullname: { type: String, required: true },
-    colour: { type: String, required: true },
+    colour: { type: Object },
     language: { type: String, required: true },
   },
   { timestamps: true }

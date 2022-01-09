@@ -2,6 +2,7 @@
 //              DATABASE
 // =======================================
 const User = require("../models/users");
+const Question = require("../models/questions");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 // for comparing password
@@ -44,7 +45,7 @@ const createUser = async (req, res) => {
         req.body.password,
         bcrypt.genSaltSync(10)
       );
-      
+
       const user = new User(req.body);
       await user.save();
 
@@ -74,7 +75,7 @@ const getUser = async (req, res) => {
     const user = await User.findOne({
       username: req.params.username,
     });
-    
+
     // if the user doesnt exist, throw error
     if (!user) {
       return res.status(404).json({ success: false, error: `User not found` });
@@ -89,6 +90,12 @@ const getUser = async (req, res) => {
 const deleteUser = async (req, res) => {
   try {
     const user = await User.findById(req.params.username);
+    // when deleting user, need to remove corresponding questionaire
+    const question = await Question.findOne({
+      username: user.username,
+    });
+    await question.remove();
+
     // remove the user
     await user.remove();
     // if the user doesnt exist, throw error
@@ -115,18 +122,16 @@ const loginUser = async (req, res) => {
     const user = await User.findOne({ username: req.body.username });
     // if the user doesn't exist, return error
     if (!user) {
-      return res.status(400).json({ success: false, error: err, message: "User doesn't exist" });
+      return res
+        .status(400)
+        .json({ success: false, error: err, message: "User doesn't exist" });
     }
     // user exists. Check if passwords match.
     if (bcrypt.compareSync(req.body.password, user.password)) {
       // success!
-      const token = jwt.sign(
-        { username: user.username, },
-        process.env.SECRET,
-        {
-          expiresIn: process.env.JWT_maxAge,
-        }
-      );
+      const token = jwt.sign({ username: user.username }, process.env.SECRET, {
+        expiresIn: process.env.JWT_maxAge,
+      });
       res.cookie("jwt", token, {
         httpOnly: true,
         maxAge: process.env.maxAge,
@@ -138,10 +143,13 @@ const loginUser = async (req, res) => {
         token: token,
         message: "Login success!",
       });
-
     } else {
       // wrong login information
-      res.status(401).json({ success: false, error: err, message: "Wrong login information" });
+      res.status(401).json({
+        success: false,
+        error: err,
+        message: "Wrong login information",
+      });
     }
   } catch (err) {
     res.status(400).json({
