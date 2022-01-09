@@ -64,9 +64,11 @@ function ShowQuestion({ userName }) {
   // for the question responses
   const [questionResponse, setQuestionResponse] = useState({});
   const [checkboxResponse, setCheckboxResponse] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   // check if the user have completed the questionaire or not
   useEffect(() => {
+    setLoading(true);
     async function getQuestionData() {
       await axios
         .get(`/api/question/${userName}`)
@@ -78,15 +80,12 @@ function ShowQuestion({ userName }) {
               checkboxResponse.push(key);
             }
           }
+          setLoading(false);
         })
         .catch((err) => console.log(err));
     }
     getQuestionData();
   }, []);
-
-  // const checkboxDetails = checkboxResponse?.map((ele) => {
-  //   return <p>{ele}</p>;
-  // });
 
   // for back button
   const handleBack = async () => {
@@ -97,18 +96,22 @@ function ShowQuestion({ userName }) {
     <>
       <h1>Responses for {userName}</h1>
       <br />
-      <h3>Full Name:</h3>
-      {questionResponse.fullname}
-      <br />
-      <h3>Favourite Colour:</h3>
-      {checkboxResponse?.map((ele) => {
-        return <p>{ele}</p>;
-      })}
-      <br />
-      <h3>Preferred Coding Language:</h3>
-      {questionResponse.language}
-      <br />
-      <Button onClick={() => handleBack()}>Back</Button>
+      {loading === false ? (
+        <>
+          <h3>Full Name:</h3>
+          {questionResponse.fullname}
+          <br />
+          <h3>Favourite Colour:</h3>
+          {checkboxResponse?.join(",")}
+          <br />
+          <h3>Preferred Coding Language:</h3>
+          {questionResponse.language}
+          <br />
+          <Button onClick={() => handleBack()}>Back</Button>
+        </>
+      ) : (
+        <h3>Loading...</h3>
+      )}
     </>
   );
 }
