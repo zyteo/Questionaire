@@ -92,6 +92,7 @@ function EditQuestion({ userName }) {
             red: res.data.data.colour.red,
             blue: res.data.data.colour.blue,
           });
+          document.querySelector(`.${res.data.data.language}`).checked = true;
         })
         .catch((err) => console.log(err));
     }
@@ -171,13 +172,15 @@ function EditQuestion({ userName }) {
         type="radio"
         name="language"
         value="Python"
+        className="Python"
         onChange={(event) => handleRadioChange(event)}
-      />
+        />
       Python
       <Input
         type="radio"
         name="language"
         value="Javascript"
+        className="Javascript"
         onChange={(event) => handleRadioChange(event)}
       />
       Javascript
