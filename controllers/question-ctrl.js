@@ -70,7 +70,7 @@ const updateQuestion = async (req, res) => {
     });
     // update the question details
     question.fullname = req.body.fullname;
-    question.color = req.body.color;
+    question.colour = req.body.colour;
     question.language = req.body.language;
 
     // save the updated question
@@ -88,7 +88,7 @@ const updateQuestion = async (req, res) => {
     });
     // replace with the updated responses
     user.question.id(question._id).fullname = question.fullname;
-    user.question.id(question._id).color = question.color;
+    user.question.id(question._id).colour = question.colour;
     user.question.id(question._id).language = question.language;
     // save the user
     await user.save();

@@ -63,11 +63,7 @@ const Button = styled.button`
 function EditQuestion({ userName }) {
   const navigate = useNavigate();
   // for the colours checkbox
-  const [checkColors, setCheckColors] = useState({
-    pink: false,
-    red: false,
-    blue: false,
-  });
+  const [checkColors, setCheckColors] = useState({});
   // for all the questions
   const [questionDetail, setQuestionDetail] = useState({
     username: userName,
@@ -75,6 +71,11 @@ function EditQuestion({ userName }) {
     colour: "",
     language: "",
   });
+
+  useEffect(() => {
+    setQuestionDetail({ ...questionDetail, colour: checkColors });
+  }, [checkColors]);
+
   // get question response to populate the questionaire
   useEffect(() => {
     async function getQuestionData() {
@@ -92,7 +93,18 @@ function EditQuestion({ userName }) {
             red: res.data.data.colour.red,
             blue: res.data.data.colour.blue,
           });
+          // for the radio button
           document.querySelector(`.${res.data.data.language}`).checked = true;
+          // for checkbox
+          if (res.data.data.colour.blue === true) {
+            document.querySelector(`.blue`).checked = true;
+          }
+          if (res.data.data.colour.red === true) {
+            document.querySelector(`.red`).checked = true;
+          }
+          if (res.data.data.colour.pink) {
+            document.querySelector(`.pink`).checked = true;
+          }
         })
         .catch((err) => console.log(err));
     }
@@ -107,17 +119,17 @@ function EditQuestion({ userName }) {
     setQuestionDetail({ ...questionDetail, language: event.target.value });
   };
 
-  const onChangePink = () => {
-    setCheckColors({ ...checkColors, pink: !checkColors.pink });
-    setQuestionDetail({ ...questionDetail, colour: checkColors });
+  const onChangePink = (e) => {
+    console.log(e.target.checked);
+    setCheckColors({ ...checkColors, pink: e.target.checked });
   };
-  const onChangeRed = () => {
-    setCheckColors({ ...checkColors, red: !checkColors.red });
-    setQuestionDetail({ ...questionDetail, colour: checkColors });
+  const onChangeRed = (e) => {
+    console.log(e.target.checked);
+    setCheckColors({ ...checkColors, red: e.target.checked });
   };
-  const onChangeBlue = () => {
-    setCheckColors({ ...checkColors, blue: !checkColors.blue });
-    setQuestionDetail({ ...questionDetail, colour: checkColors });
+  const onChangeBlue = (e) => {
+    console.log(e.target.checked);
+    setCheckColors({ ...checkColors, blue: e.target.checked });
   };
 
   //   on submitting form
@@ -150,20 +162,23 @@ function EditQuestion({ userName }) {
       <Label>Favourite Colour:</Label>
       <Input
         type="checkbox"
-        onChange={() => onChangePink()}
-        defaultChecked={questionDetail.colour.pink}
+        onChange={(e) => onChangePink(e)}
+        className="pink"
+        // defaultChecked={questionDetail.colour.pink}
       />
       Pink
       <Input
         type="checkbox"
-        onChange={() => onChangeRed()}
-        defaultChecked={questionDetail.colour.red}
+        onChange={(e) => onChangeRed(e)}
+        className="red"
+        // defaultChecked={questionDetail.colour.red}
       />
       Red
       <Input
         type="checkbox"
-        onChange={() => onChangeBlue()}
-        defaultChecked={questionDetail.colour.blue}
+        onChange={(e) => onChangeBlue(e)}
+        // defaultChecked={questionDetail.colour.blue}
+        className="blue"
       />
       Blue
       <br />
@@ -174,7 +189,7 @@ function EditQuestion({ userName }) {
         value="Python"
         className="Python"
         onChange={(event) => handleRadioChange(event)}
-        />
+      />
       Python
       <Input
         type="radio"

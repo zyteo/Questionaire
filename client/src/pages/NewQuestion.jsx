@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
@@ -86,16 +86,17 @@ function NewQuestion({ userName }) {
 
   const onChangePink = () => {
     setCheckColors({ ...checkColors, pink: !checkColors.pink });
-    setQuestionDetail({ ...questionDetail, colour: checkColors });
   };
   const onChangeRed = () => {
     setCheckColors({ ...checkColors, red: !checkColors.red });
-    setQuestionDetail({ ...questionDetail, colour: checkColors });
   };
   const onChangeBlue = () => {
     setCheckColors({ ...checkColors, blue: !checkColors.blue });
-    setQuestionDetail({ ...questionDetail, colour: checkColors });
   };
+
+  useEffect(() => {
+    setQuestionDetail({ ...questionDetail, colour: checkColors });
+  }, [checkColors]);
 
   //   on submitting form
   const handleSubmit = async (event) => {

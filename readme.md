@@ -54,3 +54,5 @@ References
 https://www.positronx.io/react-checkbox-tutorial-handle-multiple-checkboxes-values/
 https://javascript.plainenglish.io/how-to-easily-update-your-objects-with-the-spread-operator-8f3dfdbcf956
 https://stackoverflow.com/questions/5072136/javascript-filter-for-objects
+https://blog.bitsrc.io/dom-selectors-explained-70260049aaf0
+https://stackoverflow.com/questions/62994853/react-hooks-setstate-lagging-one-step-behind
