@@ -111,7 +111,7 @@ const getQuestionByUsername = async (req, res) => {
   try {
     // find the question by username
     const question = await Question.findOne({
-      username: req.body.username,
+      username: req.params.username,
     });
     if (!question) {
       return res

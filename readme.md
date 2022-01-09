@@ -53,3 +53,4 @@ References
 
 https://www.positronx.io/react-checkbox-tutorial-handle-multiple-checkboxes-values/
 https://javascript.plainenglish.io/how-to-easily-update-your-objects-with-the-spread-operator-8f3dfdbcf956
+https://stackoverflow.com/questions/5072136/javascript-filter-for-objects

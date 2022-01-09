@@ -86,19 +86,20 @@ function NewQuestion({ userName }) {
 
   const onChangePink = () => {
     setCheckColors({ ...checkColors, pink: !checkColors.pink });
+    setQuestionDetail({ ...questionDetail, colour: checkColors });
   };
   const onChangeRed = () => {
     setCheckColors({ ...checkColors, red: !checkColors.red });
+    setQuestionDetail({ ...questionDetail, colour: checkColors });
   };
   const onChangeBlue = () => {
     setCheckColors({ ...checkColors, blue: !checkColors.blue });
+    setQuestionDetail({ ...questionDetail, colour: checkColors });
   };
 
   //   on submitting form
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // need to add the colours checkbox before parsing into database
-    setQuestionDetail({ ...questionDetail, colour: checkColors });
 
     await axios.post(`/api/question`, questionDetail).then((res) => {
       alert(`Submission Complete!`);
@@ -117,6 +118,7 @@ function NewQuestion({ userName }) {
         onChange={(event) => handleNameChange(event)}
         required
       />
+      <br />
       <Label>Favourite Colour:</Label>
       <Input type="checkbox" onChange={() => onChangePink()} />
       Pink
@@ -124,6 +126,7 @@ function NewQuestion({ userName }) {
       Red
       <Input type="checkbox" onChange={() => onChangeBlue()} />
       Blue
+      <br />
       <Label>Preferred Coding Language:</Label>
       <Input
         type="radio"

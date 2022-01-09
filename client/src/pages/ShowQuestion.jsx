@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
@@ -59,25 +59,55 @@ const Button = styled.button`
     font-size: 6px;
   }
   `;
-
 function ShowQuestion({ userName }) {
   const navigate = useNavigate();
   // for the question responses
   const [questionResponse, setQuestionResponse] = useState({});
+  const [checkboxResponse, setCheckboxResponse] = useState([]);
 
-  
-  //   on submitting form
+  // check if the user have completed the questionaire or not
+  useEffect(() => {
+    async function getQuestionData() {
+      await axios
+        .get(`/api/question/${userName}`)
+        .then((res) => {
+          setQuestionResponse(res.data.data);
+          // for checkbox responses
+          for (const key in res.data.data.colour) {
+            if (res.data.data.colour[key] === true) {
+              checkboxResponse.push(key);
+            }
+          }
+        })
+        .catch((err) => console.log(err));
+    }
+    getQuestionData();
+  }, []);
+
+  // const checkboxDetails = checkboxResponse?.map((ele) => {
+  //   return <p>{ele}</p>;
+  // });
+
+  // for back button
   const handleBack = async () => {
     navigate(-1);
   };
+
   return (
     <>
       <h1>Responses for {userName}</h1>
-      <Label>Full Name:</Label>
-
-      <Label>Favourite Colour:</Label>
-      <Label>Preferred Coding Language:</Label>
-
+      <br />
+      <h3>Full Name:</h3>
+      {questionResponse.fullname}
+      <br />
+      <h3>Favourite Colour:</h3>
+      {checkboxResponse?.map((ele) => {
+        return <p>{ele}</p>;
+      })}
+      <br />
+      <h3>Preferred Coding Language:</h3>
+      {questionResponse.language}
+      <br />
       <Button onClick={() => handleBack()}>Back</Button>
     </>
   );
